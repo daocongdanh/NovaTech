@@ -11,7 +11,10 @@ public class CategoryRequest {
     @NotBlank(message = "Name cannot be blank")
     private String name;
 
-    private String image;
+    @NotBlank(message = "Label cannot be blank")
+    private String label;
+
+    private String icon;
 
     private boolean active;
 }

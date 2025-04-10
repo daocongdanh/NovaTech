@@ -13,10 +13,16 @@ import lombok.*;
 public class Attribute {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
+
+    @Column(name = "label")
+    private String label;
+
+    @Column(name = "slug")
+    private String slug;
 }

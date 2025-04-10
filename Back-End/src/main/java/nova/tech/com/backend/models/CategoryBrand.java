@@ -1,7 +1,7 @@
 package nova.tech.com.backend.models;
+
 import jakarta.persistence.*;
 import lombok.*;
-
 
 @Getter
 @Setter
@@ -9,24 +9,19 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "categories")
-public class Category {
+@Table(name = "category_brands")
+public class CategoryBrand {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    @Column(name = "slug")
-    private String slug;
-
-    @Column(name = "icon")
-    private String icon;
-
-    @Column(name = "active")
-    private Boolean active;
-
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
 }

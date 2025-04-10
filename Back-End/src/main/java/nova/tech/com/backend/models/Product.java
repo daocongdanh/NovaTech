@@ -34,6 +34,12 @@ public class Product {
     @Column(name = "discount")
     private Integer discount;
 
+    @Column(name = "view_count")
+    private Integer viewCount;
+
+    @Column(name = "note")
+    private String note;
+
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
@@ -53,4 +59,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product",fetch = FetchType.LAZY)
     private List<ProductImage> images;
+
+    @OneToMany(mappedBy = "product",fetch = FetchType.LAZY)
+    private List<ProductAttributeValue> productAttributeValues;
 }

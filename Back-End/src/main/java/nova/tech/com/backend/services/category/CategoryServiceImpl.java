@@ -3,9 +3,11 @@ package nova.tech.com.backend.services.category;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nova.tech.com.backend.dtos.request.CategoryRequest;
+import nova.tech.com.backend.dtos.response.CategoryBrandResponse;
 import nova.tech.com.backend.exceptions.ConflictException;
 import nova.tech.com.backend.exceptions.ResourceNotFoundException;
 import nova.tech.com.backend.models.Category;
+import nova.tech.com.backend.repositories.CategoryBrandRepository;
 import nova.tech.com.backend.repositories.CategoryRepository;
 import nova.tech.com.backend.utils.StringUtil;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.util.List;
 @Slf4j(topic = "CATEGORY-SERVICE")
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
+    private final CategoryBrandRepository categoryBrandRepository;
 
     @Override
     public Category createCategory(CategoryRequest categoryRequest) {
@@ -29,8 +32,8 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category category = Category.builder()
                 .name(categoryRequest.getName())
-                .slug(StringUtil.normalizeString(categoryRequest.getName()))
-                .image(categoryRequest.getImage())
+//                .label(categoryRequest.getLabel())
+                .icon(categoryRequest.getIcon())
                 .active(categoryRequest.isActive())
                 .build();
         categoryRepository.save(category);
@@ -55,8 +58,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category getCategoryBySlug(String slug) {
-        return categoryRepository.findBySlug(slug)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found with slug: " + slug));
+        return null;
+//        return categoryRepository.findBySlug(slug)
+//                .orElseThrow(() -> new ResourceNotFoundException("Category not found with slug: " + slug));
     }
 
     @Override
@@ -69,8 +73,8 @@ public class CategoryServiceImpl implements CategoryService {
             throw new ConflictException("Category with name " + categoryRequest.getName() + " already exists");
         }
         category.setName(categoryRequest.getName());
-        category.setSlug(StringUtil.normalizeString(categoryRequest.getName()));
-        category.setImage(categoryRequest.getImage());
+//        category.setLabel(categoryRequest.getLabel());
+        category.setIcon(categoryRequest.getIcon());
         category.setActive(categoryRequest.isActive());
         return category;
     }
@@ -81,6 +85,14 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = getCategoryById(id);
         category.setActive(false);
         categoryRepository.save(category);
+    }
+
+    @Override
+    public List<CategoryBrandResponse> getAllCategoryWithBrands() {
+        return categoryBrandRepository.findAll()
+                .stream()
+                .map(CategoryBrandResponse::convertEntityToResponse)
+                .toList();
     }
 
 }

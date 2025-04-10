@@ -43,17 +43,17 @@ public class CategoryController {
         );
     }
 
-    @Operation(summary = "Get category by slug")
-    @GetMapping("/slug/{slug}")
-    public ResponseEntity<SuccessResponse> getCategoryBySlug(@PathVariable String slug){
-        return ResponseEntity.ok().body(
-                new SuccessResponse(
-                        "Get category by slug successfully",
-                        OK,
-                        categoryService.getCategoryBySlug(slug)
-                )
-        );
-    }
+//    @Operation(summary = "Get category by slug")
+//    @GetMapping("/slug/{slug}")
+//    public ResponseEntity<SuccessResponse> getCategoryBySlug(@PathVariable String slug){
+//        return ResponseEntity.ok().body(
+//                new SuccessResponse(
+//                        "Get category by slug successfully",
+//                        OK,
+//                        categoryService.getCategoryBySlug(slug)
+//                )
+//        );
+//    }
 
     @Operation(summary = "Update category")
     @PutMapping("/{id}")
@@ -76,6 +76,19 @@ public class CategoryController {
                         "Category deleted successfully",
                         OK,
                         null
+                )
+        );
+    }
+
+
+    @Operation(summary = "Get all categories with brands")
+    @GetMapping("/brands")
+    public ResponseEntity<SuccessResponse> getAllCategoryWithBrands(){
+        return ResponseEntity.ok().body(
+                new SuccessResponse(
+                        "Get all categories with brands successfully",
+                        OK,
+                        categoryService.getAllCategoryWithBrands()
                 )
         );
     }
