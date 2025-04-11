@@ -31,6 +31,7 @@ export default function ProductFilter({
       setAttributes(res);
     };
     fetchApi();
+    handleClearFilter();
   }, [category, brand]);
 
   const onAdd = (filter: Filter) => {

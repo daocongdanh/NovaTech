@@ -43,7 +43,7 @@ export type CategoryBrandResponse = {
 type ProductAttributeResponse = {
   attribute: string,
   value: string,
-  lable: string
+  label: string
 }
 
 export type BrandResponse = {
@@ -55,12 +55,12 @@ export type CategoryResponse = {
   id: number,
   name: string,
   slug: string,
-  icon: string,
+  image: string,
   active: boolean
 }
 
 export type ProductResponse = {
-  id: string,
+  id: number,
   name: string,
   slug: string,
   thumbnail: string,
@@ -68,6 +68,7 @@ export type ProductResponse = {
   newPrice: number,
   discount: number,
   viewCount: number,
+  images: string[],
   note: string,
   description: string,
   quantity: number,

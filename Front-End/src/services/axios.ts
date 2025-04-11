@@ -18,7 +18,7 @@ axiosInstance.interceptors.response.use(
     const messageError = error?.response?.data?.message;
     const statusError = error?.response?.data?.status;
     if (messageError && statusError) {
-      const err = new Error(`${statusError} ${messageError}`);
+      const err = new Error(messageError);
       return Promise.reject(err);
     }
     return Promise.reject(error);

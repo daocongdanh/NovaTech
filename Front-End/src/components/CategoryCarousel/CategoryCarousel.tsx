@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Carousel,
   CarouselContent,
@@ -6,6 +5,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 const carouselItems = [
   {
@@ -17,7 +17,6 @@ const carouselItems = [
     title: "Laptop Asus",
     description: "Dẫn đầu xu hướng",
     image: "https://maytinhgiare.vn/hinh-anh/quang-cao/Baner-laptop-asus.jpg",
-    highlight: true,
   },
   {
     title: "MSI Modern",
@@ -34,8 +33,18 @@ const carouselItems = [
 ];
 export default function CategoryCarousel() {
   return (
-    <div className="relative rounded-xl shadow">
-      <Carousel>
+    <div className="relative rounded-xl shadow mx-4 xl:mx-0">
+      <Carousel
+        opts={{
+          loop: true,
+        }}
+        plugins={[
+          Autoplay({
+            delay: 3000,
+            stopOnInteraction: false,
+          }),
+        ]}
+      >
         <CarouselContent>
           {carouselItems.map((item, index) => (
             <CarouselItem key={index} className="relative rounded-xl">
@@ -51,8 +60,11 @@ export default function CategoryCarousel() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+
+        <div className="hidden xl:block">
+          <CarouselPrevious />
+          <CarouselNext />
+        </div>
       </Carousel>
     </div>
   );

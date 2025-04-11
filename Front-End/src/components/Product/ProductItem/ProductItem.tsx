@@ -1,12 +1,15 @@
-import RibbonCustom from "../RibbonCustom/RibbonCustom";
 import { Link } from "react-router";
 import { ProductResponse } from "@/types/response.type";
+import RibbonCustom from "@/components/RibbonCustom/RibbonCustom";
+import { converPriceToVN } from "@/lib/utils";
 
 export default function ProductItem({ product }: { product: ProductResponse }) {
   return (
     <div className="relative">
       <div className="flex gap-1 flex-col p-[10px] bg-white border shadow-md rounded-lg hover:shadow-xl">
-        <RibbonCustom text={`Giảm ${product.discount}%`} />
+        {product.discount > 0 && (
+          <RibbonCustom text={`Giảm ${product.discount}%`} />
+        )}
         <Link className="group" to={`/${product.id}`}>
           <div className="flex justify-center">
             <img
@@ -22,11 +25,13 @@ export default function ProductItem({ product }: { product: ProductResponse }) {
           </h2>
           <div className="flex items-baseline gap-1 font-bold">
             <span className="text-sm sm:text-base text-red-500">
-              {product.newPrice}
+              {converPriceToVN(product.newPrice, "đ")}
             </span>
-            <span className="line-through text-gray-500 text-[12px] sm:text-sm">
-              {product.oldPrice}
-            </span>
+            {product.discount > 0 && (
+              <span className="line-through text-gray-500 text-[12px] sm:text-sm">
+                {converPriceToVN(product.oldPrice, "đ")}
+              </span>
+            )}
           </div>
           <div className=" h-12">
             {!!product.note && (

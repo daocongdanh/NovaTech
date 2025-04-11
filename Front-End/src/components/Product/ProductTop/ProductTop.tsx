@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { CategoryResponse, ProductResponse } from "@/types/response.type";
 import { getTop10ProductsByCategory } from "@/services/product.service";
-import ProductItem from "@/components/ProductItem/ProductItem";
-import ProductListSkeleton from "@/components/ProductItemSkeleton/ProductItemSkeleton";
+import ProductListSkeleton from "@/components/Product/ProductItemSkeleton/ProductItemSkeleton";
+import ProductItem from "@/components/Product/ProductItem/ProductItem";
 
 export default function ProductTop({
   category,

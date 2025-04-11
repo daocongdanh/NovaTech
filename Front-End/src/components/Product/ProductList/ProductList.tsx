@@ -1,4 +1,4 @@
-import ProductItem from "@/components/ProductItem/ProductItem";
+import ProductItem from "@/components/Product/ProductItem/ProductItem";
 import { ProductResponse } from "@/types/response.type";
 
 export default function ProductList({

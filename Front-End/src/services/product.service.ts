@@ -42,3 +42,19 @@ export const getAttributesByCategory = async (
     return [];
   }
 };
+
+export const getProductById = async (id: Number): Promise<ProductResponse> => {
+  const res = await get<ProductResponse>(`/products/${id}`);
+  return res.data;
+}
+
+export const searchProductByName = async (value: string) => {
+  const query = `name:${value}`;
+  const res = await getProduct(1, 5, undefined, undefined, undefined, query);
+  return res.products;
+};
+
+export const getAllProducts = async (page: number, limit: number) => {
+  const res = await get<Page<ProductResponse>>(`/products?page=${page}&limit=${limit}`);
+  return res.data;
+}

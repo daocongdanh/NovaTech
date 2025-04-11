@@ -1,13 +1,13 @@
 import { useParams, useSearchParams } from "react-router";
 import { useEffect, useMemo, useState } from "react";
 import NavBrand from "@/components/NavBrand/NavBrand";
-import ProductFilter from "@/components/ProductFilter/ProductFilter";
-import ProductSort from "@/components/ProductSort/ProductSort";
 import { getProduct } from "@/services/product.service";
-import ProductList from "@/components/ProductList/ProductList";
 import MyPagination from "@/components/MyPagination/MyPagination";
 import { ProductResponse } from "@/types/response.type";
-import ProductListSkeleton from "@/components/ProductItemSkeleton/ProductItemSkeleton";
+import ProductFilter from "@/components/Product/ProductFilter/ProductFilter";
+import ProductSort from "@/components/Product/ProductSort/ProductSort";
+import ProductListSkeleton from "@/components/Product/ProductItemSkeleton/ProductItemSkeleton";
+import ProductList from "@/components/Product/ProductList/ProductList";
 
 export default function ProductSearchPage() {
   const { category, brand } = useParams();

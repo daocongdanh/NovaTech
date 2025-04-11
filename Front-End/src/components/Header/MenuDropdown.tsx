@@ -1,4 +1,4 @@
-import { BrandResponse } from "@/types/response.type";
+import { BrandResponse, CategoryResponse } from "@/types/response.type";
 import { Dropdown, MenuProps } from "antd";
 import { Link } from "react-router";
 
@@ -10,14 +10,14 @@ export const MenuDropdown = ({
   brands,
   name,
 }: {
-  category: string;
+  category: CategoryResponse;
   name: string;
   brands: BrandResponse[];
 }) => {
   let items: MenuProps["items"] = brands.map((item: BrandResponse) => ({
     key: item.id,
     label: (
-      <Link to={`/danh-muc/${category}/${item.name}.html`}>
+      <Link to={`/danh-muc/${category.slug}/${item.name}.html`}>
         {capitalizeFirstLetter(item.name)}
       </Link>
     ),
@@ -26,16 +26,21 @@ export const MenuDropdown = ({
     ...items,
     {
       key: 0,
-      label: <Link to={`/danh-muc/${category}.html`}>Xem tất cả</Link>,
+      label: <Link to={`/danh-muc/${category.slug}.html`}>Xem tất cả</Link>,
     },
   ];
   return (
     <Dropdown menu={{ items }} placement="bottom">
       <Link
         to={`/danh-muc/${category}.html`}
-        className="h-9 flex gap-2 items-center cursor-pointer uppercase text-[12px] lg:text-sm text-white hover:text-white"
+        className="h-9 flex items-center gap-2 cursor-pointer uppercase text-[12px] lg:text-sm text-white hover:text-white hover:bg-red-500 px-2 transition-all rounded"
       >
-        {name}
+        <img
+          src={category.image}
+          alt={category.image}
+          className="w-5 h-5 object-contain"
+        />
+        <span>{name}</span>
       </Link>
     </Dropdown>
   );

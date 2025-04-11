@@ -1,5 +1,5 @@
 import { NavBrandButton } from "@/components/NavBrandButton/NavBrandButton";
-import ProductTop from "@/components/ProductTop/ProductTop";
+import ProductTop from "@/components/Product/ProductTop/ProductTop";
 import { getbrandsByCategory } from "@/services/brand.service";
 import { BrandResponse, CategoryResponse } from "@/types/response.type";
 import { useEffect, useState } from "react";
