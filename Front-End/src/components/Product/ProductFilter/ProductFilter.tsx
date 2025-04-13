@@ -6,7 +6,6 @@ import { getAttributesByCategory } from "@/services/product.service";
 import { AttributeResponse } from "@/types/response.type";
 
 type Filter = {
-  filterName: string;
   filterSlug: string;
   filterLabel: string;
   value: string;
@@ -46,7 +45,7 @@ export default function ProductFilter({
     setFilterValues((prev) => {
       let updated = prev[index];
       let newState = prev.filter(
-        (item) => item.filterName !== updated.filterName
+        (item) => item.filterSlug !== updated.filterSlug
       );
       updated = {
         ...updated,
@@ -57,26 +56,26 @@ export default function ProductFilter({
     });
   };
 
-  const handleDeleteOneFilter = (filterName: string) => {
+  const handleDeleteOneFilter = (filterSlug: string) => {
     setFilterValues((prev) =>
-      prev.filter((item) => item.filterName !== filterName)
+      prev.filter((item) => item.filterSlug !== filterSlug)
     );
   };
 
   const handleClearFilter = () => setFilterValues([]);
 
-  const isActive = (filterName: string) => {
-    return filterValues.some((item) => item.filterName === filterName);
+  const isActive = (filterSlug: string) => {
+    return filterValues.some((item) => item.filterSlug === filterSlug);
   };
 
   const handleAddFilter = (filter: Filter) => {
     const index = filterValues.findIndex(
-      (item) => item.filterName === filter.filterName
+      (item) => item.filterSlug === filter.filterSlug
     );
     if (index !== -1) {
       const existing = filterValues[index];
       if (existing.value === filter.value)
-        handleDeleteOneFilter(filter.filterName);
+        handleDeleteOneFilter(filter.filterSlug);
       else handleChangeValue(index, filter.value, filter.valueSlug);
     } else {
       onAdd(filter);
@@ -92,7 +91,6 @@ export default function ProductFilter({
 
     if (query) params.set("filters", query);
     else params.delete("filters");
-
     navigate(`${location.pathname}?${params.toString()}`, { replace: true });
   }, [filterValues]);
 
@@ -104,7 +102,7 @@ export default function ProductFilter({
           {!!attributes.length &&
             attributes.map((filter) => (
               <Tooltip
-                key={filter.name}
+                key={filter.slug}
                 title={
                   <div className="flex flex-wrap gap-2 w-[250px]">
                     {!!filter.values.length &&
@@ -113,7 +111,6 @@ export default function ProductFilter({
                           className="capitalize"
                           onClick={() =>
                             handleAddFilter({
-                              filterName: filter.name,
                               filterSlug: filter.slug,
                               filterLabel: filter.label,
                               value: item.value,
@@ -132,8 +129,8 @@ export default function ProductFilter({
               >
                 <Button
                   className="capitalize"
-                  danger={isActive(filter.name)}
-                  onClick={() => handleDeleteOneFilter(filter.name)}
+                  danger={isActive(filter.slug)}
+                  onClick={() => handleDeleteOneFilter(filter.slug)}
                 >
                   {filter.label}
                 </Button>
@@ -152,8 +149,8 @@ export default function ProductFilter({
                   className="capitalize"
                   danger
                   icon={<IoIosCloseCircle />}
-                  onClick={() => handleDeleteOneFilter(filter.filterName)}
-                  key={`${filter.filterName}:${filter.value}`}
+                  onClick={() => handleDeleteOneFilter(filter.filterSlug)}
+                  key={`${filter.filterSlug}:${filter.value}`}
                 >{`${filter.filterLabel}: ${filter.value}`}</Button>
               ))}
               <Button danger onClick={handleClearFilter}>

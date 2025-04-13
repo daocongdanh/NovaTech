@@ -32,7 +32,7 @@ export const MenuDropdown = ({
   return (
     <Dropdown menu={{ items }} placement="bottom">
       <Link
-        to={`/danh-muc/${category}.html`}
+        to={`/danh-muc/${category.slug}.html`}
         className="h-9 flex items-center gap-2 cursor-pointer uppercase text-[12px] lg:text-sm text-white hover:text-white hover:bg-red-500 px-2 transition-all rounded"
       >
         <img

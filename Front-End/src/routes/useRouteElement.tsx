@@ -12,6 +12,9 @@ import ArticleManagement from "@/pages/admin/ArticleManagement/ArticleManagement
 import CategoryAdd from "@/pages/admin/CategoryManagement/CategoryAdd";
 import CategoryUpdate from "@/pages/admin/CategoryManagement/CategoryUpdate";
 import ProductAdd from "@/pages/admin/ProductManagement/ProductAdd";
+import ProductUpdate from "@/pages/admin/ProductManagement/ProductUpdate";
+import BrandAdd from "@/pages/admin/BrandManagement/BrandAdd";
+import BrandUpdate from "@/pages/admin/BrandManagement/BrandUpdate";
 
 export default function useRouteElement() {
   const routes = [
@@ -31,10 +34,13 @@ export default function useRouteElement() {
       children: [
         { path: "", element: <ProductManagement /> },
         { path: "add", element: <ProductAdd /> },
+        { path: "update/:id", element: <ProductUpdate /> },
         { path: "categories", element: <CategoryManagement /> },
         { path: "categories/add", element: <CategoryAdd /> },
         { path: "categories/update/:id", element: <CategoryUpdate /> },
         { path: "brands", element: <BrandManagement /> },
+        { path: "brands/add", element: <BrandAdd /> },
+        { path: "brands/update/:id", element: <BrandUpdate /> },
         { path: "attributes", element: <AttributeManagement /> },
         { path: "articles", element: <ArticleManagement /> },
       ],

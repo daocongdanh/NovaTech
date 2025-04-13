@@ -16,6 +16,7 @@ export default function CategoryAdd() {
   const navigate = useNavigate();
 
   const handleFinish = async (values: any) => {
+    if (loading) return;
     let images: string[] = [];
     setLoading(true);
     try {
@@ -33,7 +34,9 @@ export default function CategoryAdd() {
       };
       await createCategory(categoryRequset);
       message.success("Thêm mới danh mục thành công");
-      navigate("/admin/categories");
+      setTimeout(() => {
+        navigate("/admin/categories");
+      }, 500);
     } catch (err: any) {
       const axiosError = err as AxiosError;
       const errorMsg = axiosError?.message || "Có lỗi xảy ra";
@@ -75,6 +78,7 @@ export default function CategoryAdd() {
           form={form}
           onFinish={handleFinish}
           autoComplete="off"
+          disabled={loading}
         >
           <Form.Item
             label="Tên danh mục"

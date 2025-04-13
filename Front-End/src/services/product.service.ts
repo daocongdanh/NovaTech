@@ -1,4 +1,5 @@
-import { get } from "@/services/axios";
+import { del, get, post, put } from "@/services/axios";
+import { ProductRequest } from "@/types/request.type";
 import { AttributeResponse, Page, ProductResponse } from "@/types/response.type";
 
 export const getProduct = async (
@@ -56,5 +57,25 @@ export const searchProductByName = async (value: string) => {
 
 export const getAllProducts = async (page: number, limit: number) => {
   const res = await get<Page<ProductResponse>>(`/products?page=${page}&limit=${limit}`);
+  return res.data;
+}
+
+export const createProduct = async (productRequest: ProductRequest) => {
+  const res = await post("/products", productRequest);
+  return res.data;
+}
+
+export const deleteImageProduct = async (productId: Number, imageId: Number) => {
+  const res = await del(`/products/delete-image/${productId}/${imageId}`);
+  return res.data;
+}
+
+export const addImageProduct = async (productId: number, imageUrl: string) => {
+  const res = await post(`/products/add-image/${productId}`, { imageUrl });
+  return res.data;
+};
+
+export const updateProduct = async (id: number, productRequest: ProductRequest) => {
+  const res = await put(`/products/${id}`, productRequest);
   return res.data;
 }

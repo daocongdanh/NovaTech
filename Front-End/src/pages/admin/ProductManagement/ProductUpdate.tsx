@@ -1,5 +1,23 @@
 import useMessage from "@/hooks/useMessage";
 import {
+  addImageProduct,
+  deleteImageProduct,
+  getProductById,
+  updateProduct,
+} from "@/services/product.service";
+import {
+  AttributeForProductRequest,
+  ProductRequest,
+} from "@/types/request.type";
+import { CameraOutlined } from "@ant-design/icons";
+import {
+  Attribute,
+  BrandResponse,
+  CategoryResponse,
+  ProductAttributeResponse,
+  ProductResponse,
+} from "@/types/response.type";
+import {
   Form,
   Input,
   InputNumber,
@@ -8,29 +26,19 @@ import {
   Upload,
   UploadFile,
   UploadProps,
+  Popconfirm,
 } from "antd";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import { CameraOutlined } from "@ant-design/icons";
-import {
-  Attribute,
-  BrandResponse,
-  CategoryResponse,
-} from "@/types/response.type";
-import { getAllCategory } from "@/services/category.service";
-import { getbrandsByCategory } from "@/services/brand.service";
-import { getAttributeByCategory } from "@/services/attribute.service";
-import {
-  AttributeForProductRequest,
-  ProductRequest,
-} from "@/types/request.type";
-import { AxiosError } from "axios";
-import { upload } from "@/services/upload.service";
-import { createProduct } from "@/services/product.service";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 const { TextArea } = Input;
 const { Option } = Select;
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
+import { getAllCategory } from "@/services/category.service";
+import { getbrandsByCategory } from "@/services/brand.service";
+import { getAttributeByCategory } from "@/services/attribute.service";
+import { AxiosError } from "axios";
+import { upload } from "@/services/upload.service";
 
 const modules = {
   toolbar: [
@@ -69,12 +77,19 @@ const formats = [
   "list",
   "bullet",
 ];
-export default function ProductAdd() {
+export default function ProductUpdate() {
+  const { id } = useParams();
   const [form] = Form.useForm();
   const [thumbnailList, setThumbnailList] = useState<UploadFile[]>([]);
   const [imageList, setImagelList] = useState<UploadFile[]>([]);
   const [categories, setCategories] = useState<CategoryResponse[]>([]);
   const [brands, setBrands] = useState<BrandResponse[]>([]);
+  const [brandCache, setBrandCache] = useState<Record<string, number | null>>(
+    {}
+  );
+  const [attributeCache, setAttributeCache] = useState<
+    Record<string, Record<string, string>>
+  >({});
   const [attributes, setAttributes] = useState<Attribute[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [attributeRequest, setAttributeRequest] = useState<
@@ -82,18 +97,136 @@ export default function ProductAdd() {
   >([]);
   const message = useMessage();
   const navigate = useNavigate();
-
   useEffect(() => {
     const fetchApi = async () => {
-      const res = await getAllCategory(true);
-      setCategories(res);
+      const productRes = await getProductById(Number(id));
+      const categoriesRes = await getAllCategory();
+      setCategories(categoriesRes);
+      form.setFieldsValue({
+        name: productRes.name,
+        price: productRes.oldPrice,
+        discount: productRes.discount,
+        note: productRes.note,
+        description: productRes.description,
+        quantity: productRes.quantity,
+        active: productRes.active,
+        categorySlug: productRes.category.slug,
+        brandId: productRes.brand.id,
+      });
+      handleCategoryChage(
+        productRes.category.slug,
+        productRes.brand.id,
+        productRes.attributes
+      );
+      setThumbnailList([
+        {
+          uid: "raw-thumbnail",
+          name: "thumbnail",
+          status: "done",
+          thumbUrl: productRes.thumbnail,
+        },
+      ]);
+      setImagelList(
+        productRes.images.map((item, index) => {
+          return {
+            uid: String(item.id),
+            name: `image-${index}`,
+            status: "done",
+            thumbUrl: item.imageUrl,
+          };
+        })
+      );
+      setAttributeRequest(
+        productRes.attributes.map((item) => {
+          return {
+            attributeId: item.attributeId,
+            value: item.value,
+          };
+        })
+      );
     };
     fetchApi();
   }, []);
 
-  const onChange =
-    (type: string): UploadProps["onChange"] =>
-    ({ file, fileList: newFileList }) => {
+  const handleCategoryChage = async (
+    slug: string,
+    selectedBrandId?: number,
+    attributeValues?: ProductAttributeResponse[]
+  ) => {
+    // Lấy danh sách brand & attributes theo category
+    const brandRes = await getbrandsByCategory(slug);
+    const attributeRes = await getAttributeByCategory(slug);
+    setBrands(brandRes);
+    setAttributes(attributeRes);
+
+    // Nếu là lần đầu load (khi edit sản phẩm)
+    if (selectedBrandId !== undefined && attributeValues) {
+      // ⚡ Cache brand
+      setBrandCache((prev) => ({ ...prev, [slug]: selectedBrandId }));
+
+      // ⚡ Cache attributes
+      const attrMap: Record<string, string> = {};
+      attributeValues.forEach((attr) => {
+        attrMap[attr.slug] = attr.value;
+      });
+      setAttributeCache((prev) => ({ ...prev, [slug]: attrMap }));
+
+      // ⚡ Set giá trị vào form
+      form.setFieldsValue({
+        brandId: selectedBrandId,
+        ...attrMap,
+      });
+    } else {
+      // Khi user thay đổi category
+
+      // 🧹 Reset brand
+      form.setFieldsValue({ brandId: null });
+
+      // 🧹 Reset tất cả attributes hiện tại
+      const resetAttrs: Record<string, any> = {};
+      attributeRes.forEach((attr) => {
+        resetAttrs[attr.name] = undefined;
+      });
+      form.setFieldsValue(resetAttrs);
+
+      // ✅ Nếu có cache → set lại brand + attribute
+      const cachedBrand = brandCache[slug];
+      const cachedAttrs = attributeCache[slug];
+
+      if (cachedBrand !== undefined) {
+        form.setFieldsValue({ brandId: cachedBrand });
+      }
+
+      if (cachedAttrs) {
+        form.setFieldsValue(cachedAttrs);
+      }
+      setAttributeRequest([]);
+    }
+  };
+
+  const handleChangeAttribute = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    item: Attribute
+  ) => {
+    const { value } = e.target;
+
+    setAttributeRequest((prev) => {
+      const existingIndex = prev.findIndex(
+        (attr) => attr.attributeId === item.id
+      );
+
+      if (existingIndex !== -1) {
+        const updated = [...prev];
+        updated[existingIndex].value = value;
+        return updated;
+      } else {
+        return [...prev, { attributeId: item.id, value }];
+      }
+    });
+  };
+
+  const onChange = (type: string): UploadProps["onChange"] => {
+    return async ({ file, fileList: newFileList }) => {
       if (type === "thumbnail") {
         const isDuplicate = thumbnailList.some(
           (f) => f.name === file.name && f.size === file.size
@@ -117,9 +250,21 @@ export default function ProductAdd() {
           message.error("Chỉ được upload tối đa 4 ảnh");
           return;
         }
-        setImagelList(newFileList);
+        try {
+          const formData = new FormData();
+          formData.append("files", file);
+          const images = await upload(formData);
+          console.log(images[0]);
+          await addImageProduct(Number(id), images[0]);
+          setImagelList(newFileList);
+        } catch (err: any) {
+          const axiosError = err as AxiosError;
+          const errorMsg = axiosError?.message || "Có lỗi xảy ra";
+          message.error(errorMsg);
+        }
       }
     };
+  };
 
   const handleRemove = (type: string) => async (file: UploadFile) => {
     if (type === "thumbnail") {
@@ -128,75 +273,42 @@ export default function ProductAdd() {
       setImagelList((prev) => prev.filter((item) => item.uid !== file.uid));
     }
   };
-
-  const handleCategoryChage = async (slug: string) => {
-    form.setFieldsValue({
-      brandId: null,
-    });
-    const brandRes = await getbrandsByCategory(slug);
-    const attributeRes = await getAttributeByCategory(slug);
-    setBrands(brandRes);
-    setAttributes(attributeRes);
-    setAttributeRequest([]);
-  };
-
-  const handleChangeAttribute = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    item: Attribute
-  ) => {
-    const { value } = e.target;
-
-    setAttributeRequest((prev) => {
-      const existingIndex = prev.findIndex(
-        (attr) => attr.attributeId === item.id
-      );
-
-      if (existingIndex !== -1) {
-        const updated = [...prev];
-        updated[existingIndex].value = value;
-        return updated;
-      } else {
-        return [...prev, { attributeId: item.id, value }];
-      }
-    });
-  };
   const handleFinish = async (values: any) => {
     if (loading) return;
+    if (thumbnailList.length === 0) {
+      message.error("Vui lòng chọn ảnh đại diện");
+      return;
+    }
     setLoading(true);
     try {
-      let thumbnails: string[] = [];
-      let images: string[] = [];
-      if (thumbnailList.length > 0) {
+      let thumbnail: string;
+      const file: UploadFile = thumbnailList[0];
+      if (file.uid === "raw-thumbnail") {
+        thumbnail = file.thumbUrl ?? "";
+      } else {
         const formData = new FormData();
         thumbnailList.forEach((file: UploadFile) => {
           formData.append("files", file.originFileObj as Blob);
         });
-        thumbnails = await upload(formData);
+        const res = await upload(formData);
+        thumbnail = res[0];
       }
-      if (imageList.length > 0) {
-        const formData = new FormData();
-        imageList.forEach((file: UploadFile) => {
-          formData.append("files", file.originFileObj as Blob);
-        });
-        images = await upload(formData);
-      }
+
       const productRequest: ProductRequest = {
         name: values.name,
-        thumbnail: thumbnails[0],
-        images: images,
+        thumbnail: thumbnail,
         price: values.price,
         discount: values.discount,
         note: values.note,
         description: values.description,
         quantity: values.quantity,
-        active: true,
+        active: values.active,
         categorySlug: values.categorySlug,
         brandId: values.brandId,
         attributes: attributeRequest,
       };
-      console.log(productRequest);
-      await createProduct(productRequest);
-      message.success("Thêm sản phẩm mới thành công");
+      await updateProduct(Number(id), productRequest);
+      message.success("Cập nhật sản phẩm thành công");
       setTimeout(() => {
         navigate("/admin");
       }, 500);
@@ -207,6 +319,37 @@ export default function ProductAdd() {
     } finally {
       setLoading(false);
     }
+  };
+  const handleRemoveImages = async (file: any) => {
+    try {
+      await deleteImageProduct(Number(id), Number(file.uid));
+      setImagelList((prev) => prev.filter((item) => item.uid !== file.uid));
+    } catch (err: any) {
+      const axiosError = err as AxiosError;
+      const errorMsg = axiosError?.message || "Có lỗi xảy ra";
+      message.error(errorMsg);
+    }
+  };
+  const customItemRender = (originNode: any, file: any) => {
+    return React.cloneElement(originNode, {
+      children: originNode.props.children.map((child: any, index: any) => {
+        if (index === 3) {
+          return (
+            <Popconfirm
+              title="Bạn có chắc chắn muốn xóa ảnh này không?"
+              onConfirm={() => {
+                handleRemoveImages(file);
+              }}
+              okText="Có"
+              cancelText="Không"
+            >
+              {child}
+            </Popconfirm>
+          );
+        }
+        return child;
+      }),
+    });
   };
   return (
     <>
@@ -234,11 +377,7 @@ export default function ProductAdd() {
             <Input placeholder="Nhập tên sản phẩm" />
           </Form.Item>
 
-          <Form.Item
-            label="Ảnh đại diện"
-            name="thumbnail"
-            rules={[{ required: true, message: "Vui lòng chọn ảnh đại diện" }]}
-          >
+          <Form.Item label="Ảnh đại diện" name="thumbnail">
             <Upload
               listType="picture-card"
               accept="image/*"
@@ -263,8 +402,8 @@ export default function ProductAdd() {
               accept="image/*"
               fileList={imageList}
               onChange={onChange("images")}
-              multiple
-              onRemove={handleRemove("images")}
+              // onRemove={handleRemove("images")}
+              itemRender={customItemRender}
               beforeUpload={() => false}
             >
               {imageList.length < 4 && (
@@ -350,13 +489,30 @@ export default function ProductAdd() {
               }}
             />
           </Form.Item>
+          <Form.Item label="Trạng thái" name="active">
+            <Select
+              options={[
+                {
+                  value: true,
+                  label: "Đang hoạt động",
+                },
+                {
+                  value: false,
+                  label: "Ngừng hoạt động",
+                },
+              ]}
+            />
+          </Form.Item>
 
           <Form.Item
             label="Danh mục"
             name="categorySlug"
             rules={[{ required: true, message: "Vui lòng chọn danh mục" }]}
           >
-            <Select placeholder="Chọn danh mục" onChange={handleCategoryChage}>
+            <Select
+              placeholder="Chọn danh mục"
+              onChange={(slug) => handleCategoryChage(slug)}
+            >
               {categories.map((item) => (
                 <Option key={`category${item.id}`} value={item.slug}>
                   {item.name}
@@ -402,7 +558,7 @@ export default function ProductAdd() {
 
           <Form.Item>
             <Button type="primary" htmlType="submit" loading={loading}>
-              Thêm mới
+              Cập nhật
             </Button>
           </Form.Item>
         </Form>

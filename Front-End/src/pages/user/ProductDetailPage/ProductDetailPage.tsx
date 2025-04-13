@@ -28,7 +28,11 @@ export default function ProductDetailPage() {
   const { id } = useParams();
   useEffect(() => {
     const fetchApi = async () => {
-      const res = await getProductById(Number(id));
+      var res = await getProductById(Number(id));
+      res.images.unshift({
+        id: 0,
+        imageUrl: res.thumbnail,
+      });
       setProduct(res);
     };
     fetchApi();
@@ -46,8 +50,6 @@ export default function ProductDetailPage() {
     setSelectedIndex(index);
     api?.scrollTo(index);
   };
-
-  console.log(product);
 
   return (
     <div className="max-w-7xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -71,7 +73,7 @@ export default function ProductDetailPage() {
                 {product.images.map((img, index) => (
                   <CarouselItem key={index} className="flex justify-center">
                     <img
-                      src={img}
+                      src={img.imageUrl}
                       alt={`Hình ${index + 1}`}
                       className="rounded-md object-contain max-h-[300px] w-full"
                     />
@@ -94,7 +96,7 @@ export default function ProductDetailPage() {
                   }`}
                 >
                   <img
-                    src={img}
+                    src={img.imageUrl}
                     alt="thumb"
                     className={`object-contain max-h-14 transition-opacity ${
                       selectedIndex === index ? "opacity-100" : "opacity-70"

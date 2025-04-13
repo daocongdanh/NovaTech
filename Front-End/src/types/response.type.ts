@@ -28,7 +28,6 @@ type AttributeValueResponse = {
 
 export type AttributeResponse = {
   id: number,
-  name: string,
   label: string,
   slug: string,
   values: AttributeValueResponse[]
@@ -40,8 +39,9 @@ export type CategoryBrandResponse = {
   category: string
 }
 
-type ProductAttributeResponse = {
-  attribute: string,
+export type ProductAttributeResponse = {
+  attributeId: number,
+  slug: string,
   value: string,
   label: string
 }
@@ -59,6 +59,10 @@ export type CategoryResponse = {
   active: boolean
 }
 
+type ImageResponse = {
+  id: number,
+  imageUrl: string
+}
 export type ProductResponse = {
   id: number,
   name: string,
@@ -68,7 +72,7 @@ export type ProductResponse = {
   newPrice: number,
   discount: number,
   viewCount: number,
-  images: string[],
+  images: ImageResponse[],
   note: string,
   description: string,
   quantity: number,
@@ -76,4 +80,10 @@ export type ProductResponse = {
   brand: BrandResponse,
   category: CategoryResponse,
   attributes: ProductAttributeResponse[]
+}
+
+export type Attribute = {
+  id: number,
+  label: string,
+  slug: string
 }

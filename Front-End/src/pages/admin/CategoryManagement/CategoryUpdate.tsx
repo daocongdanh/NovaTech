@@ -65,6 +65,7 @@ export default function CategoryUpdate() {
   };
 
   const handleFinish = async (values: any) => {
+    if (loading) return;
     if (fileList.length === 0) {
       message.error("Vui lòng chọn hình ảnh");
       return;
@@ -90,7 +91,9 @@ export default function CategoryUpdate() {
       };
       await updateCategory(Number(id), categoryRequset);
       message.success("Cập nhật danh mục thành công");
-      navigate("/admin/categories");
+      setTimeout(() => {
+        navigate("/admin/categories");
+      }, 500);
     } catch (err) {
       const axiosError = err as AxiosError;
       const errorMsg = axiosError?.message || "Có lỗi xảy ra";
@@ -110,6 +113,7 @@ export default function CategoryUpdate() {
           form={form}
           onFinish={handleFinish}
           autoComplete="off"
+          disabled={loading}
         >
           <Form.Item
             label="Tên danh mục"
