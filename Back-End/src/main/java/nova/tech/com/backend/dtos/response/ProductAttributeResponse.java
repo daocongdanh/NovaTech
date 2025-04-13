@@ -6,7 +6,8 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ProductAttributeResponse {
-    private String attribute;
+    private Long attributeId;
+    private String slug;
     private String value;
     private String label;
 }

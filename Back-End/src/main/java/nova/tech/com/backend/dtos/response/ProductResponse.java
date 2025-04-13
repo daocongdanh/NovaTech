@@ -26,6 +26,7 @@ public class ProductResponse {
     private Integer discount;
     private Integer viewCount;
     private String note;
+    private List<ImageResponse> images;
     private String description;
     private Integer quantity;
     private Boolean active;
@@ -41,12 +42,16 @@ public class ProductResponse {
         if(productAttributeValues != null){
             list = productAttributeValues.stream()
                     .map(pa -> ProductAttributeResponse.builder()
-                            .attribute(pa.getAttribute().getName())
+                            .attributeId(pa.getAttribute().getId())
+                            .slug(pa.getAttribute().getSlug())
                             .value(pa.getValue())
                             .label(pa.getAttribute().getLabel())
                             .build())
                     .toList();
         }
+        List<ImageResponse> images = product.getImages().stream()
+                .map(ImageResponse::convertEntityToResponse)
+                .toList();
 
         return ProductResponse.builder()
                 .id(product.getId())
@@ -57,6 +62,7 @@ public class ProductResponse {
                 .newPrice(product.getPrice() - (product.getPrice() * product.getDiscount() / 100))
                 .discount(product.getDiscount())
                 .viewCount(product.getViewCount())
+                .images(images)
                 .note(product.getNote())
                 .description(product.getDescription())
                 .quantity(product.getQuantity())

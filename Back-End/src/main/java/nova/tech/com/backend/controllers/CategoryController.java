@@ -43,6 +43,18 @@ public class CategoryController {
         );
     }
 
+    @Operation(summary = "Get category by id")
+    @GetMapping("/{id}")
+    public ResponseEntity<SuccessResponse> getCategoryById(@PathVariable Long id){
+        return ResponseEntity.ok().body(
+                new SuccessResponse(
+                        "Get category by id successfully",
+                        OK,
+                        categoryService.getCategoryById(id)
+                )
+        );
+    }
+
 //    @Operation(summary = "Get category by slug")
 //    @GetMapping("/slug/{slug}")
 //    public ResponseEntity<SuccessResponse> getCategoryBySlug(@PathVariable String slug){

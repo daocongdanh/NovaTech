@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 @Builder
 public class AttributeResponse {
     private Long id;
-    private String name;
     private String label;
     private String slug;
     private List<AttributeValueResponse> values;
@@ -22,7 +21,6 @@ public class AttributeResponse {
     public static AttributeResponse convertEntityToResponse(Attribute attribute, List<ProductAttributeValue> productAttributes) {
         return AttributeResponse.builder()
                 .id(attribute.getId())
-                .name(attribute.getName())
                 .label(attribute.getLabel())
                 .slug(attribute.getSlug())
                 .values(productAttributes.stream()

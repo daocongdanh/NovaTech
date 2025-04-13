@@ -6,13 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CategoryRequest {
-
+public class BrandRequest {
     @NotBlank(message = "Name cannot be blank")
     private String name;
-
-    @NotBlank(message = "Image cannot be blank")
-    private String image;
-
-    private boolean active;
 }

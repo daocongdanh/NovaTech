@@ -1,5 +1,6 @@
 package nova.tech.com.backend.repositories;
 
+import nova.tech.com.backend.models.Brand;
 import nova.tech.com.backend.models.Category;
 import nova.tech.com.backend.models.CategoryBrand;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,4 +11,5 @@ import java.util.List;
 @Repository
 public interface CategoryBrandRepository extends JpaRepository<CategoryBrand, Long> {
     List<CategoryBrand> findAllByCategory(Category category);
+    boolean existsByBrand(Brand brand);
 }

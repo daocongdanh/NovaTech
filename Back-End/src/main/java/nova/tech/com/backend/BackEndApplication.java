@@ -16,6 +16,7 @@ public class BackEndApplication {
         // Api prefix
         System.setProperty("API_PREFIX", dotenv.get("API_PREFIX"));
         System.setProperty("APP_PORT", dotenv.get("APP_PORT"));
+        System.setProperty("API_BASE_URL", dotenv.get("API_BASE_URL"));
 
         // Database
         System.setProperty("DATABASE_URL", dotenv.get("DATABASE_URL"));

@@ -24,7 +24,7 @@ public class Category {
     private String slug;
 
     @Column(name = "icon")
-    private String icon;
+    private String image;
 
     @Column(name = "active")
     private Boolean active;

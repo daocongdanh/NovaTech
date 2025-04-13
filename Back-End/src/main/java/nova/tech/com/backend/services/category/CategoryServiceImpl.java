@@ -9,6 +9,7 @@ import nova.tech.com.backend.exceptions.ResourceNotFoundException;
 import nova.tech.com.backend.models.Category;
 import nova.tech.com.backend.repositories.CategoryBrandRepository;
 import nova.tech.com.backend.repositories.CategoryRepository;
+import nova.tech.com.backend.services.upload.UploadService;
 import nova.tech.com.backend.utils.StringUtil;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryBrandRepository categoryBrandRepository;
+    private final UploadService uploadService;
 
     @Override
     public Category createCategory(CategoryRequest categoryRequest) {
@@ -27,13 +29,13 @@ public class CategoryServiceImpl implements CategoryService {
 
         if (categoryRepository.existsByName(categoryRequest.getName())) {
             log.error("Category with name {} already exists", categoryRequest.getName());
-            throw new ConflictException("Category with name " + categoryRequest.getName() + " already exists");
+            throw new ConflictException("Category with name '" + categoryRequest.getName() + "' already exists");
         }
 
         Category category = Category.builder()
                 .name(categoryRequest.getName())
-//                .label(categoryRequest.getLabel())
-                .icon(categoryRequest.getIcon())
+                .slug(StringUtil.normalizeString(categoryRequest.getName()))
+                .image(categoryRequest.getImage())
                 .active(categoryRequest.isActive())
                 .build();
         categoryRepository.save(category);
@@ -72,10 +74,18 @@ public class CategoryServiceImpl implements CategoryService {
             log.error("Category with name {} already exists", categoryRequest.getName());
             throw new ConflictException("Category with name " + categoryRequest.getName() + " already exists");
         }
+
+        String oldImagePath = category.getImage();
+        String newImagePath = categoryRequest.getImage();
+        if (!newImagePath.equals(oldImagePath)) {
+            uploadService.delete(oldImagePath);
+        }
+
         category.setName(categoryRequest.getName());
-//        category.setLabel(categoryRequest.getLabel());
-        category.setIcon(categoryRequest.getIcon());
+        category.setSlug(StringUtil.normalizeString(categoryRequest.getName()));
+        category.setImage(newImagePath);
         category.setActive(categoryRequest.isActive());
+        categoryRepository.save(category);
         return category;
     }
 
