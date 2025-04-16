@@ -31,6 +31,12 @@ public class Product {
     @Column(name = "price")
     private Integer price;
 
+    @Column(name = "old_price")
+    private Integer oldPrice;
+
+    @Column(name = "new_price")
+    private Integer newPrice;
+
     @Column(name = "discount")
     private Integer discount;
 

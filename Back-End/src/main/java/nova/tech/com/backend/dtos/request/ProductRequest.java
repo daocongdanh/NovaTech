@@ -18,11 +18,11 @@ public class ProductRequest {
 
     private List<String> images;
 
-    @NotNull(message = "Price cannot be null")
-    private Integer price;
+    @NotNull(message = "Old Price cannot be null")
+    private Integer oldPrice;
 
-    @NotNull(message = "Discount cannot be null")
-    private Integer discount;
+    @NotNull(message = "New Price cannot be null")
+    private Integer newPrice;
 
     private String note;
     private String description;

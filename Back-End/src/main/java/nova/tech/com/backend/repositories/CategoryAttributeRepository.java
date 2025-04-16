@@ -13,5 +13,6 @@ public interface CategoryAttributeRepository extends JpaRepository<CategoryAttri
 
     List<CategoryAttribute> findAllByCategory(Category category);
     boolean existsByAttribute(Attribute attribute);
+    boolean existsByCategoryAndAttribute(Category category, Attribute attribute);
 
 }

@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService{
         Category category = categoryRepository.findById(cid)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + cid));
 
-        return productRepository.findTop10ByCategoryAndActiveOrderByViewCountDesc(category, true)
+        return productRepository.findTop5ByCategoryAndActiveOrderByViewCountDesc(category, true)
                 .stream()
                 .map(product -> ProductResponse.convertEntityToResponse(
                         product, null))
@@ -88,8 +88,10 @@ public class ProductServiceImpl implements ProductService{
                 .name(productRequest.getName())
                 .slug(StringUtil.normalizeString(productRequest.getName()))
                 .thumbnail(productRequest.getThumbnail())
-                .price(productRequest.getPrice())
-                .discount(productRequest.getDiscount())
+                .oldPrice(productRequest.getOldPrice())
+                .newPrice(productRequest.getNewPrice())
+                .discount((int) (((double)(productRequest.getOldPrice() - productRequest.getNewPrice())
+                        / productRequest.getOldPrice()) * 100))
                 .viewCount(0)
                 .note(productRequest.getNote())
                 .description(productRequest.getDescription())
@@ -164,12 +166,13 @@ public class ProductServiceImpl implements ProductService{
         }
 
         boolean isCategoryUnchanged = category.getId().equals(product.getCategory().getId());
-
         product.setName(productRequest.getName());
         product.setSlug(StringUtil.normalizeString(productRequest.getName()));
         product.setThumbnail(newThumbnailPath);
-        product.setPrice(productRequest.getPrice());
-        product.setDiscount(productRequest.getDiscount());
+        product.setOldPrice(productRequest.getOldPrice());
+        product.setNewPrice(productRequest.getNewPrice());
+        product.setDiscount((int) (((double)(productRequest.getOldPrice() - productRequest.getNewPrice())
+                / productRequest.getOldPrice()) * 100));
         product.setNote(productRequest.getNote());
         product.setDescription(productRequest.getDescription());
         product.setQuantity(productRequest.getQuantity());
@@ -195,5 +198,24 @@ public class ProductServiceImpl implements ProductService{
             }
             productAttributeValueRepository.save(productAttributeValue);
         }
+    }
+
+    @Override
+    public List<ProductResponse> getRandom10Products(String slug) {
+        Product product = productRepository.findBySlug(slug)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with slug: " + slug));
+        return productRepository.findRandom10ByCategoryIdAndNotProductId(product.getCategory().getId(), slug)
+                .stream()
+                .map(p -> ProductResponse.convertEntityToResponse(
+                        p, null))
+                .toList();
+    }
+
+    @Override
+    public ProductResponse getProductBySlug(String slug) {
+        return productRepository.findBySlug(slug)
+                .map(product -> ProductResponse.convertEntityToResponse(
+                        product, product.getProductAttributeValues()))
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with slug: " + slug));
     }
 }

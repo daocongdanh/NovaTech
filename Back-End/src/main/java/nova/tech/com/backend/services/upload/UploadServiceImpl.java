@@ -78,20 +78,20 @@ public class UploadServiceImpl implements UploadService{
                 System.out.println("Deleted file: " + fullPath);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Error deleting file: " + e.getMessage());
+            System.out.println("Error deleting file: " + e.getMessage());
         }
     }
 
 
 
     private void isFileValid(List<MultipartFile> files) {
-        if (files.size() > 6) {
+        if (files.size() > 4) {
             throw new InvalidParamException("Only upload up to 4 files.");
         }
         for (MultipartFile file : files) {
             if (file != null) {
                 String originalFilename = file.getOriginalFilename();
-                List<String> allowedExtensions = List.of(".png", ".jpg", ".jpeg");
+                List<String> allowedExtensions = List.of(".png", ".jpg", ".jpeg", ".svg");
                 if (allowedExtensions.stream().noneMatch(originalFilename::endsWith)) {
                     throw new InvalidFileTypeException("Invalid file type.");
                 }

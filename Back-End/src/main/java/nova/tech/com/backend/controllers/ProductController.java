@@ -68,6 +68,19 @@ public class ProductController {
         );
     }
 
+    @GetMapping("/slug/{slug}")
+    public ResponseEntity<SuccessResponse> getProductBySlug(
+            @PathVariable String slug
+    ){
+        return ResponseEntity.ok().body(
+                new SuccessResponse(
+                        "Get product by slug successfully",
+                        OK,
+                        productService.getProductBySlug(slug)
+                )
+        );
+    }
+
     @GetMapping("")
     public ResponseEntity<SuccessResponse> getAllProducts(
             @RequestParam(defaultValue = "1") int page,
@@ -137,6 +150,19 @@ public class ProductController {
                         "Update product successfully",
                         OK,
                         null
+                )
+        );
+    }
+
+    @GetMapping("/random-products/{slug}")
+    public ResponseEntity<SuccessResponse> getRandom10Products(
+            @PathVariable String slug
+    ){
+        return ResponseEntity.ok().body(
+                new SuccessResponse(
+                        "Get random products successfully",
+                        OK,
+                        productService.getRandom10Products(slug)
                 )
         );
     }

@@ -17,4 +17,6 @@ public interface ProductService {
     void deleteImageProduct(Long productId, Long imageId);
     void addImageProduct(Long productId, String imageUrl);
     void updateProduct(Long id, ProductRequest productRequest);
+    List<ProductResponse> getRandom10Products(String slug);
+    ProductResponse getProductBySlug(String slug);
 }

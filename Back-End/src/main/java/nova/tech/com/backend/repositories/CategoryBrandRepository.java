@@ -12,4 +12,5 @@ import java.util.List;
 public interface CategoryBrandRepository extends JpaRepository<CategoryBrand, Long> {
     List<CategoryBrand> findAllByCategory(Category category);
     boolean existsByBrand(Brand brand);
+    boolean existsByCategoryAndBrand(Category category, Brand brand);
 }

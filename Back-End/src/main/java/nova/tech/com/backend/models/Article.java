@@ -3,6 +3,8 @@ package nova.tech.com.backend.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,8 +28,11 @@ public class Article {
     @Column(name = "thumbnail")
     private String thumbnail;
 
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
+
+    @Column(name = "created_at")
+    private LocalDate createdAt;
 
     @Column(name = "active")
     private Boolean active;
