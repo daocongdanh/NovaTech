@@ -2,8 +2,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 
@@ -31,9 +29,9 @@ const carouselItems = [
       "https://maytinhgiare.vn/hinh-anh/quang-cao/Baner-laptop-workstation.jpg",
   },
 ];
-export default function CategoryCarousel() {
+export default function MainBanner() {
   return (
-    <div className="relative rounded-xl shadow mx-4 xl:mx-0">
+    <div className="relative rounded-xl shadow xl:mx-0">
       <Carousel
         opts={{
           loop: true,
@@ -45,26 +43,17 @@ export default function CategoryCarousel() {
           }),
         ]}
       >
-        <CarouselContent>
+        <CarouselContent className="h-full">
           {carouselItems.map((item, index) => (
-            <CarouselItem key={index} className="relative rounded-xl">
+            <CarouselItem key={index} className="relative rounded-xl h-full">
               <img
                 src={item.image}
                 alt={item.title}
-                className="w-full h-96 object-cover rounded-xl"
+                className="w-full h-full object-cover rounded-xl"
               />
-              {/* <div className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-80 p-2 text-center">
-                <div>{item.title}</div>
-                <div className="text-xs">{item.description}</div>
-              </div> */}
             </CarouselItem>
           ))}
         </CarouselContent>
-
-        <div className="hidden xl:block">
-          <CarouselPrevious />
-          <CarouselNext />
-        </div>
       </Carousel>
     </div>
   );

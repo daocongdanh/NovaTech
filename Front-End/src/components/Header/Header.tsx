@@ -2,7 +2,6 @@ import { FaShopify } from "react-icons/fa";
 import { Link } from "react-router";
 import Breadcrumb from "@/components/BreadCumb/Breadcrumb";
 import { PiPhoneThin } from "react-icons/pi";
-import CategoryHeader from "@/components/Header/CategoryHeader";
 import SearchInput from "@/components/Search/SearchInput";
 export default function Header() {
   return (
@@ -12,7 +11,7 @@ export default function Header() {
           <Link to={"/"}>
             <h2 className="hidden md:flex items-center text-white font-bold text-2xl">
               <FaShopify size={34} />
-              Shopify
+              TechStore
             </h2>
             <h2 className="md:hidden block">
               <FaShopify size={34} />
@@ -30,7 +29,6 @@ export default function Header() {
           </Link>
         </div>
       </div>
-      <CategoryHeader />
       <Breadcrumb />
     </div>
   );

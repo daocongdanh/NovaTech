@@ -15,7 +15,6 @@ import {
   BrandResponse,
   CategoryResponse,
   ProductAttributeResponse,
-  ProductResponse,
 } from "@/types/response.type";
 import {
   Form,
@@ -104,7 +103,8 @@ export default function ProductUpdate() {
       setCategories(categoriesRes);
       form.setFieldsValue({
         name: productRes.name,
-        price: productRes.oldPrice,
+        oldPrice: productRes.oldPrice,
+        newPrice: productRes.newPrice,
         discount: productRes.discount,
         note: productRes.note,
         description: productRes.description,
@@ -118,6 +118,7 @@ export default function ProductUpdate() {
         productRes.brand.id,
         productRes.attributes
       );
+      console.log(productRes);
       setThumbnailList([
         {
           uid: "raw-thumbnail",
@@ -147,7 +148,6 @@ export default function ProductUpdate() {
     };
     fetchApi();
   }, []);
-
   const handleCategoryChage = async (
     slug: string,
     selectedBrandId?: number,
@@ -185,7 +185,7 @@ export default function ProductUpdate() {
       // 🧹 Reset tất cả attributes hiện tại
       const resetAttrs: Record<string, any> = {};
       attributeRes.forEach((attr) => {
-        resetAttrs[attr.name] = undefined;
+        resetAttrs[attr.label] = undefined;
       });
       form.setFieldsValue(resetAttrs);
 
@@ -297,8 +297,8 @@ export default function ProductUpdate() {
       const productRequest: ProductRequest = {
         name: values.name,
         thumbnail: thumbnail,
-        price: values.price,
-        discount: values.discount,
+        oldPrice: values.oldPrice,
+        newPrice: values.newPrice,
         note: values.note,
         description: values.description,
         quantity: values.quantity,
@@ -418,26 +418,24 @@ export default function ProductUpdate() {
           </Form.Item>
 
           <Form.Item
-            label="Giá"
-            name="price"
-            rules={[{ required: true, message: "Vui lòng nhập giá" }]}
+            label="Giá cũ"
+            name="oldPrice"
+            rules={[{ required: true, message: "Vui lòng nhập giá cũ" }]}
           >
             <InputNumber
-              placeholder="Nhập giá"
+              placeholder="Nhập giá cũ"
               min={0}
               style={{ width: "100%" }}
             />
           </Form.Item>
-
           <Form.Item
-            label="Giảm giá (%)"
-            name="discount"
-            rules={[{ required: true, message: "Vui lòng nhập giảm giá" }]}
+            label="Giá mới"
+            name="newPrice"
+            rules={[{ required: true, message: "Vui lòng nhập giá mới" }]}
           >
             <InputNumber
-              placeholder="Nhập phần trăm giảm giá"
+              placeholder="Nhập giá mới"
               min={0}
-              max={100}
               style={{ width: "100%" }}
             />
           </Form.Item>
@@ -540,7 +538,7 @@ export default function ProductUpdate() {
             attributes.map((item) => (
               <Form.Item
                 label={item.label}
-                name={item.name}
+                name={item.slug}
                 rules={[
                   {
                     required: true,

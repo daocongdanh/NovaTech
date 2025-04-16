@@ -29,10 +29,21 @@ export default function MenuSider() {
       label: <Link to="/admin/brands">Brand</Link>,
       icon: <TrademarkOutlined style={{ fontSize: "17px" }} />,
     },
+
+    {
+      key: "/admin/category-brands",
+      label: <Link to="/admin/category-brands">Category-Brand</Link>,
+      icon: <TrademarkOutlined style={{ fontSize: "17px" }} />,
+    },
     {
       key: "/admin/attributes",
       label: <Link to="/admin/attributes">Attribute</Link>,
       icon: <SettingOutlined style={{ fontSize: "17px" }} />,
+    },
+    {
+      key: "/admin/category-attributes",
+      label: <Link to="/admin/category-attributes">Category-Attribute</Link>,
+      icon: <TrademarkOutlined style={{ fontSize: "17px" }} />,
     },
     {
       key: "/admin/articles",

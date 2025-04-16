@@ -7,7 +7,7 @@ export default function UserLayout() {
   return (
     <div className="relative">
       <Header />
-      <main className="text-[#444444] max-w-[1200px] mx-auto w-full pt-5">
+      <main className="text-[#444444] max-w-[1200px] mx-auto w-full pt-2">
         <Outlet />
       </main>
       <Footer />

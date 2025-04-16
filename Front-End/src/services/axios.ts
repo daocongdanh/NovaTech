@@ -2,6 +2,11 @@ import { TResponse } from "@/types/response.type";
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 const BASEURL = "http://localhost:8080/api/v1";
+let navigate: any = null;
+
+export const setNavigate = (nav: any) => {
+  navigate = nav;
+};
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: BASEURL,
@@ -17,6 +22,12 @@ axiosInstance.interceptors.response.use(
   (error) => {
     const messageError = error?.response?.data?.message;
     const statusError = error?.response?.data?.status;
+
+    if (statusError === 404) {
+      if (navigate) {
+        navigate('/not-found');
+      }
+    }
     if (messageError && statusError) {
       const err = new Error(messageError);
       return Promise.reject(err);

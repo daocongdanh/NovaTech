@@ -26,3 +26,8 @@ export const getAllAttributesWithPagination = async (page: number, limit: number
   const res = await get<Page<Attribute>>(`/attributes/pagination?page=${page}&limit=${limit}`);
   return res.data;
 }
+
+export const getAttributeById = async (id: number): Promise<Attribute> => {
+  const res = await get<Attribute>(`/attributes/${id}`);
+  return res.data;
+}

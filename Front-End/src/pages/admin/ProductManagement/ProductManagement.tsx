@@ -11,7 +11,8 @@ interface ProductTableItem {
   stt: number;
   name: string;
   thumbnail: string;
-  price: number;
+  oldPrice: number;
+  newPrice: number;
   discount: number;
   viewCount: number;
   quantity: number;
@@ -50,7 +51,8 @@ export default function ProductManagement() {
           stt: (page - 1) * limit + index + 1,
           name: item.name,
           thumbnail: item.thumbnail,
-          price: item.oldPrice,
+          oldPrice: item.oldPrice,
+          newPrice: item.newPrice,
           discount: item.discount,
           viewCount: item.viewCount,
           quantity: item.quantity,
@@ -82,10 +84,20 @@ export default function ProductManagement() {
       ),
     },
     {
-      title: "Giá",
-      dataIndex: "price",
-      key: "price",
-      render: (price: number) => <span>{price.toLocaleString("vi-VN")}₫</span>,
+      title: "Giá cũ",
+      dataIndex: "oldPrice",
+      key: "oldPrice",
+      render: (oldPrice: number) => (
+        <span>{oldPrice.toLocaleString("vi-VN")}₫</span>
+      ),
+    },
+    {
+      title: "Giá mới",
+      dataIndex: "newPrice",
+      key: "newPrice",
+      render: (newPrice: number) => (
+        <span>{newPrice.toLocaleString("vi-VN")}₫</span>
+      ),
     },
     {
       title: "Giảm giá",

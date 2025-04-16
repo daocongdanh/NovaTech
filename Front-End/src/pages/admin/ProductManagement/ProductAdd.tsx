@@ -184,8 +184,8 @@ export default function ProductAdd() {
         name: values.name,
         thumbnail: thumbnails[0],
         images: images,
-        price: values.price,
-        discount: values.discount,
+        oldPrice: values.oldPrice,
+        newPrice: values.newPrice,
         note: values.note,
         description: values.description,
         quantity: values.quantity,
@@ -279,29 +279,28 @@ export default function ProductAdd() {
           </Form.Item>
 
           <Form.Item
-            label="Giá"
-            name="price"
-            rules={[{ required: true, message: "Vui lòng nhập giá" }]}
+            label="Giá cũ"
+            name="oldPrice"
+            rules={[{ required: true, message: "Vui lòng nhập giá cũ" }]}
           >
             <InputNumber
-              placeholder="Nhập giá"
+              placeholder="Nhập giá cũ"
+              min={0}
+              style={{ width: "100%" }}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Giá mới"
+            name="newPrice"
+            rules={[{ required: true, message: "Vui lòng nhập giá mới" }]}
+          >
+            <InputNumber
+              placeholder="Nhập giá mới"
               min={0}
               style={{ width: "100%" }}
             />
           </Form.Item>
 
-          <Form.Item
-            label="Giảm giá (%)"
-            name="discount"
-            rules={[{ required: true, message: "Vui lòng nhập giảm giá" }]}
-          >
-            <InputNumber
-              placeholder="Nhập phần trăm giảm giá"
-              min={0}
-              max={100}
-              style={{ width: "100%" }}
-            />
-          </Form.Item>
           <Form.Item
             label="Số lượng"
             name="quantity"
@@ -384,7 +383,7 @@ export default function ProductAdd() {
             attributes.map((item) => (
               <Form.Item
                 label={item.label}
-                name={item.name}
+                name={item.slug}
                 rules={[
                   {
                     required: true,

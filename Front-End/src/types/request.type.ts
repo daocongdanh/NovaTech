@@ -16,8 +16,8 @@ export type ProductRequest = {
   name: string,
   thumbnail: string,
   images?: string[],
-  price: number,
-  discount: number,
+  oldPrice: number,
+  newPrice: number,
   note: string,
   description: string,
   quantity: number,
@@ -28,10 +28,24 @@ export type ProductRequest = {
 }
 
 export type ArticleRequest = {
-
+  title: string,
+  thumbnail: string,
+  content: string,
+  active: boolean
 }
 
 export type AttributeForProductRequest = {
   attributeId: number,
   value: string
+}
+
+export type CategoryAttributeRequest = {
+  categoryId: number,
+  attributeId: number
+}
+
+
+export type CategoryBrandRequest = {
+  categoryId: number,
+  brandId: number
 }

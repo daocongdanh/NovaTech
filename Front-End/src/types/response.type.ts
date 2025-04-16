@@ -87,3 +87,25 @@ export type Attribute = {
   label: string,
   slug: string
 }
+
+export type CategoryAttribute = {
+  id: number,
+  category: CategoryResponse,
+  attribute: Attribute
+}
+
+export type CategoryBrand = {
+  id: number,
+  category: CategoryResponse,
+  brand: BrandResponse
+}
+
+export type Article = {
+  id: number,
+  title: string,
+  slug: string,
+  thumbnail: string,
+  content: string,
+  createdAt: Date,
+  active: boolean
+}

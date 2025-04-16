@@ -10,7 +10,7 @@ export default function ProductItem({ product }: { product: ProductResponse }) {
         {product.discount > 0 && (
           <RibbonCustom text={`Giảm ${product.discount}%`} />
         )}
-        <Link className="group" to={`/${product.id}`}>
+        <Link className="group" to={`/${product.slug}`}>
           <div className="flex justify-center">
             <img
               className="relative z-0 group-hover:scale-[1.05] size-[160px]"

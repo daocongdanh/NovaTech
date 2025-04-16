@@ -20,7 +20,7 @@ export const SearchOutput = ({
             key={product.id}
             className="px-[10px] py-[5px] hover:bg-[#f5f5f5] text-sm text-[#7D7D7D] line-clamp-1"
           >
-            <Link onClick={handleCancel} to={"/"}>
+            <Link onClick={handleCancel} to={`/${product.slug}`}>
               {product.name}
             </Link>
           </li>
@@ -34,7 +34,7 @@ export const SearchOutput = ({
             key={product.id}
             className="px-[10px] py-[5px] text-[12px] hover:bg-[#f5f5f5]"
           >
-            <Link onClick={handleCancel} to={"/"}>
+            <Link onClick={handleCancel} to={`/${product.slug}`}>
               <div className="flex items-center gap-3">
                 <ImageWithFallback
                   width={50}

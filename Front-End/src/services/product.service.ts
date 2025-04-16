@@ -49,6 +49,11 @@ export const getProductById = async (id: Number): Promise<ProductResponse> => {
   return res.data;
 }
 
+export const getProductBySlug = async (slug: string): Promise<ProductResponse> => {
+  const res = await get<ProductResponse>(`/products/slug/${slug}`);
+  return res.data;
+}
+
 export const searchProductByName = async (value: string) => {
   const query = `name:${value}`;
   const res = await getProduct(1, 5, undefined, undefined, undefined, query);
@@ -77,5 +82,10 @@ export const addImageProduct = async (productId: number, imageUrl: string) => {
 
 export const updateProduct = async (id: number, productRequest: ProductRequest) => {
   const res = await put(`/products/${id}`, productRequest);
+  return res.data;
+}
+
+export const getRandom10Products = async (slug: string): Promise<ProductResponse[]> => {
+  const res = await get<ProductResponse[]>(`/products/random-products/${slug}`);
   return res.data;
 }
