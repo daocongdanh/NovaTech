@@ -6,19 +6,19 @@ export default function HomeSection() {
   return (
     <div className="px-2 md:px-4">
       {/* Grid hàng trên */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <div className="flex flex-col lg:flex-row gap-4">
         {/* CategorySidebar - Ẩn dưới lg */}
-        <div className="hidden lg:block lg:col-span-2">
+        <div className="hidden lg:block lg:w-[19%]">
           <CategorySidebar />
         </div>
 
         {/* MainBanner - luôn hiển thị, full width dưới lg */}
-        <div className="col-span-1 lg:col-span-8">
+        <div className="w-full lg:flex-1">
           <MainBanner />
         </div>
 
         {/* SideBannerList - ẩn dưới lg, hiển thị bên phải trên lg */}
-        <div className="hidden lg:grid lg:grid-cols-1 lg:gap-2 lg:col-span-2">
+        <div className="hidden lg:block lg:w-[15%]">
           <SideBannerList />
         </div>
       </div>

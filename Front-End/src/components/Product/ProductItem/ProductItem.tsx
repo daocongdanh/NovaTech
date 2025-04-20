@@ -13,7 +13,7 @@ export default function ProductItem({ product }: { product: ProductResponse }) {
         <Link className="group" to={`/${product.slug}`}>
           <div className="flex justify-center">
             <img
-              className="relative z-0 group-hover:scale-[1.05] size-[160px]"
+              className="relative z-0 group-hover:scale-[1.05] size-[160px] object-cover"
               width={160}
               height={160}
               alt={product.name}

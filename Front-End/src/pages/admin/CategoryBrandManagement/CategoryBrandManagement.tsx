@@ -7,7 +7,6 @@ import MyPagination from "@/components/MyPagination/MyPagination";
 import useMessage from "@/hooks/useMessage";
 import { AxiosError } from "axios";
 import {
-  deleteCategoryAttribute,
   deleteCategoryBrand,
   getAllCategoryBrands,
 } from "@/services/category.service";

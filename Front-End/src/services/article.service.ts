@@ -29,3 +29,8 @@ export const getArticleBySlug = async (slug: string): Promise<Article> => {
   const res = await get<Article>(`/articles/slug/${slug}`);
   return res.data;
 }
+
+export const getLatestArticles = async (): Promise<Article[]> => {
+  const res = await get<Article[]>(`/articles/latest`);
+  return res.data;
+}

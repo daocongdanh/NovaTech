@@ -1,6 +1,6 @@
 import { Button, Form, Input, Upload, UploadFile, UploadProps } from "antd";
 import { CameraOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import useMessage from "@/hooks/useMessage";
 import { upload } from "@/services/upload.service";
 import { ArticleRequest } from "@/types/request.type";
@@ -9,44 +9,35 @@ import { AxiosError } from "axios";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import { createArticle } from "@/services/article.service";
-const modules = {
-  toolbar: [
-    [{ size: [] }],
-    [
-      {
-        color: [
-          "black",
-          "red",
-          "blue",
-          "green",
-          "orange",
-          "purple",
-          "gray",
-          "brown",
-          "pink",
-          "teal",
+import Quill from "quill";
+export default function ArticleAdd() {
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          ["bold", "italic", "underline", "strike"],
+          ["blockquote", "code-block"],
+          [{ header: 1 }, { header: 2 }],
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ script: "sub" }, { script: "super" }],
+          [{ indent: "-1" }, { indent: "+1" }],
+          [{ direction: "rtl" }],
+          [{ size: ["small", false, "large", "huge"] }],
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          [{ color: [] }, { background: [] }],
+          [{ font: [] }],
+          [{ align: [] }],
+          ["clean"],
+          // ["image"],
         ],
       },
-    ],
-    [{ align: [] }],
-    ["bold", "italic", "underline", "strike"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["clean"],
-  ],
-};
-
-const formats = [
-  "size",
-  "color",
-  "align",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "list",
-  "bullet",
-];
-export default function ArticleAdd() {
+      imageResize: {
+        parchment: Quill.import("parchment"),
+        modules: ["Resize", "DisplaySize", "Toolbar"],
+      },
+    }),
+    []
+  );
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -175,7 +166,6 @@ export default function ArticleAdd() {
               <ReactQuill
                 theme="snow"
                 modules={modules}
-                formats={formats}
                 onChange={(value) => {
                   form.setFieldsValue({ content: value });
                   form.validateFields(["content"]);

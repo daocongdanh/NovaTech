@@ -30,7 +30,7 @@ export default function AdminLayout() {
           ) : (
             <Link to={"/admin"} className="flex justify-center my-[5px]">
               <p className="uppercase font-bold text-gray-700 text-2xl">
-                Techstore247
+                Techstore
               </p>
             </Link>
           )}

@@ -16,7 +16,7 @@ export default function Section({ category }: { category: CategoryResponse }) {
   }, []);
   return (
     <div className="flex flex-col gap-3">
-      <h2 className="font-bold text-2xl capitalize">{category.name} nổi bật</h2>
+      <h2 className="font-bold text-2xl capitalize">{category.name}</h2>
       <div className="w-full overflow-auto no-scrollbar">
         <div className="flex gap-3 justify-between items-center">
           <div className="flex gap-3">

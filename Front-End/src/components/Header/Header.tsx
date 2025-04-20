@@ -1,6 +1,6 @@
 import { FaShopify } from "react-icons/fa";
 import { Link } from "react-router";
-import Breadcrumb from "@/components/BreadCumb/Breadcrumb";
+// import Breadcrumb from "@/components/BreadCumb/Breadcrumb";
 import { PiPhoneThin } from "react-icons/pi";
 import SearchInput from "@/components/Search/SearchInput";
 export default function Header() {
@@ -10,7 +10,11 @@ export default function Header() {
         <div className="max-w-[1200px] mx-auto px-[10px] h-14 flex gap-4 items-center justify-between">
           <Link to={"/"}>
             <h2 className="hidden md:flex items-center text-white font-bold text-2xl">
-              <FaShopify size={34} />
+              <img
+                src="logo123.png"
+                alt=""
+                className="w-8 h-8 object-cover rounded-full mr-2"
+              />
               TechStore
             </h2>
             <h2 className="md:hidden block">
@@ -23,13 +27,13 @@ export default function Header() {
               <PiPhoneThin size={34} />
               <p className="text-sm">
                 Gọi mua hàng <br />
-                1800.2044
+                039.240.6660
               </p>
             </div>
           </Link>
         </div>
       </div>
-      <Breadcrumb />
+      {/* <Breadcrumb /> */}
     </div>
   );
 }

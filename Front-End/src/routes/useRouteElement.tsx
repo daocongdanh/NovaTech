@@ -26,6 +26,7 @@ import ArticleUpdate from "@/pages/admin/ArticleManagement/ArticleUpdate";
 import ArticlePage from "@/pages/user/ArticlePage/ArticlePage";
 import ArticleDetailPage from "@/pages/user/ArticleDetailPage/ArticleDetailPage";
 import Error404 from "@/pages/error/Error404/Error404";
+import ArticleTest from "@/pages/admin/ArticleManagement/ArticleTest";
 export default function useRouteElement() {
   const routes = [
     {
@@ -65,6 +66,7 @@ export default function useRouteElement() {
         { path: "attributes/add", element: <AttributeAdd /> },
         { path: "attributes/update/:id", element: <AttributeUpdate /> },
         { path: "articles", element: <ArticleManagement /> },
+        { path: "articles/test", element: <ArticleTest /> },
         { path: "articles/add", element: <ArticleAdd /> },
         { path: "articles/update/:id", element: <ArticleUpdate /> },
         { path: "articles/test", element: <ArticleUpdate /> },

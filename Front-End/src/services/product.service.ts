@@ -89,3 +89,8 @@ export const getRandom10Products = async (slug: string): Promise<ProductResponse
   const res = await get<ProductResponse[]>(`/products/random-products/${slug}`);
   return res.data;
 }
+
+export const increaseViewCount = async (slug: string) => {
+  const res = await put(`/products/increase-view-count/${slug}`);
+  return res.data;
+}

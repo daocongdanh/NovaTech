@@ -21,9 +21,13 @@ import { ProductResponse } from "@/types/response.type";
 import {
   getProductBySlug,
   getRandom10Products,
+  increaseViewCount,
 } from "@/services/product.service";
 import { converPriceToVN } from "@/lib/utils";
 import ProductItem from "@/components/Product/ProductItem/ProductItem";
+import "react-quill-new/dist/quill.snow.css";
+import "react-quill-new/dist/quill.core.css";
+import "react-quill-new/dist/quill.bubble.css";
 
 export default function ProductDetailPage() {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -35,6 +39,7 @@ export default function ProductDetailPage() {
     const fetchApi = async () => {
       var res = await getProductBySlug(slug ?? "");
       const productRandomRes = await getRandom10Products(slug ?? "");
+      await increaseViewCount(slug ?? "");
       setRandomProduct(productRandomRes);
       res.images.unshift({
         id: 0,
@@ -181,8 +186,8 @@ export default function ProductDetailPage() {
                 <div className="flex items-center gap-4 flex-wrap">
                   <FaPhoneAlt className="text-[#1a6dad] text-2xl" />
                   <ul className="list-disc ml-4">
-                    <li>0921.87.88.89</li>
-                    <li>0922.87.88.89</li>
+                    <li>039.240.6660</li>
+                    <li>039.240.6660</li>
                   </ul>
                 </div>
               </div>
@@ -206,7 +211,7 @@ export default function ProductDetailPage() {
                 </p>
                 <div className="flex items-center gap-4">
                   <FaMapMarkerAlt className="text-[#1a6dad] text-2xl" />
-                  <span>10 đường số 3, cư xá Lữ Gia, P.15, Q.11, TP.HCM</span>
+                  <span>Số 35 đường số 3, Phường 10, Quận gò vấp, TP.HCM</span>
                 </div>
               </div>
             </CardContent>
@@ -255,35 +260,43 @@ export default function ProductDetailPage() {
       </div>
 
       <div className="px-5 mt-5">
-        <h2 className="font-bold text-2xl capitalize mb-2">
-          Sản phẩm liên quan
-        </h2>
-        <div className="py-2 ps-2 rounded-lg overflow-hidden">
-          <Carousel
-            opts={{
-              loop: true,
-            }}
-            plugins={[
-              Autoplay({
-                delay: 3000,
-                stopOnInteraction: false,
-              }),
-            ]}
-          >
-            <CarouselContent className="ml-2 pr-[10px]">
-              {randomProduct?.map((product) => (
-                <CarouselItem
-                  className="pl-2 basis-1/2  md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
-                  key={`product_${product.id}`}
-                >
-                  <ProductItem product={product} />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="left-2" />
-            <CarouselNext className="right-2" />
-          </Carousel>
-        </div>
+        {randomProduct.length > 0 && (
+          <>
+            <h2 className="font-bold text-2xl capitalize mb-2">
+              Sản phẩm liên quan
+            </h2>
+            <div className="py-2 ps-2 rounded-lg overflow-hidden">
+              <Carousel
+                opts={{
+                  loop: true,
+                }}
+                plugins={[
+                  Autoplay({
+                    delay: 3000,
+                    stopOnInteraction: false,
+                  }),
+                ]}
+              >
+                <CarouselContent className="ml-2 pr-[10px]">
+                  {randomProduct.map((product) => (
+                    <CarouselItem
+                      className="pl-2 basis-1/2  md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
+                      key={`product_${product.id}`}
+                    >
+                      <ProductItem product={product} />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                {randomProduct.length >= 5 && (
+                  <>
+                    <CarouselPrevious className="left-2" />
+                    <CarouselNext className="right-2" />
+                  </>
+                )}
+              </Carousel>
+            </div>
+          </>
+        )}
       </div>
     </>
   );

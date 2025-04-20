@@ -104,7 +104,7 @@ export default function ProductFilter({
               <Tooltip
                 key={filter.slug}
                 title={
-                  <div className="flex flex-wrap gap-2 w-[250px]">
+                  <div className="inline-flex flex-wrap gap-2 max-w-[90vw]">
                     {!!filter.values.length &&
                       filter.values.map((item) => (
                         <Button
@@ -126,6 +126,7 @@ export default function ProductFilter({
                 }
                 placement="bottom"
                 color="#fff"
+                overlayStyle={{ maxWidth: "unset" }}
               >
                 <Button
                   className="capitalize"

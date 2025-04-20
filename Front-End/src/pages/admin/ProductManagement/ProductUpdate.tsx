@@ -252,7 +252,9 @@ export default function ProductUpdate() {
         }
         try {
           const formData = new FormData();
-          formData.append("files", file);
+          if (file instanceof File) {
+            formData.append("files", file);
+          }
           const images = await upload(formData);
           console.log(images[0]);
           await addImageProduct(Number(id), images[0]);

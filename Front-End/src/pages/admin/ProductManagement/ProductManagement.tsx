@@ -1,5 +1,5 @@
 import { getAllProducts } from "@/services/product.service";
-import { Page, ProductResponse } from "@/types/response.type";
+import { ProductResponse } from "@/types/response.type";
 import { Button, Tag, Tooltip, Input, Spin, Table } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";

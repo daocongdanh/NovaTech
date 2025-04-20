@@ -60,20 +60,20 @@ export default function Footer() {
           <ul className="space-y-1">
             <li>
               Mua hàng:{" "}
-              <span className="text-[#1982F9] font-semibold">1900.5301</span>
+              <span className="text-[#1982F9] font-semibold">039.240.6660</span>
             </li>
             <li>
               Bảo hành:{" "}
-              <span className="text-[#1982F9] font-semibold">1900.5325</span>
+              <span className="text-[#1982F9] font-semibold">039.240.6660</span>
             </li>
             <li>
               Khiếu nại:{" "}
-              <span className="text-[#1982F9] font-semibold">1800.6173</span>
+              <span className="text-[#1982F9] font-semibold">039.240.6660</span>
             </li>
             <li>
               Email:{" "}
               <span className="text-[#1982F9] font-semibold">
-                cskh@gearvn.com
+                danhlaptrinh@gmail.com
               </span>
             </li>
           </ul>

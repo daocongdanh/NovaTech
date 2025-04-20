@@ -25,6 +25,7 @@
     "embla-carousel-react": "^8.6.0",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.487.0",
+    "quill-image-resize-module-react": "^3.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",

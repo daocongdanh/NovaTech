@@ -1,4 +1,4 @@
-import { MenuDropdown } from "@/components/Header/MenuDropdown";
+import MenuDropdown from "@/components/Header/MenuDropdown";
 import { getbrandsByCategory } from "@/services/brand.service";
 import { getAllCategory } from "@/services/category.service";
 import { BrandResponse, CategoryResponse } from "@/types/response.type";
@@ -11,12 +11,7 @@ export const CategoryDropDown = ({
 }) => {
   return (
     <div className="cursor-pointer">
-      <MenuDropdown
-        brands={[]} // Để rỗng vì đã xử lý brands riêng ở trên
-        name={category.name}
-        category={category}
-        isPreview={false}
-      />
+      <MenuDropdown brands={[]} category={category} isPreview={false} />
     </div>
   );
 };
@@ -54,12 +49,11 @@ export default function CategorySidebar() {
         >
           {hoveredCategory && (
             <div
-              className="absolute left-full top-[-1px] min-w-[800px] min-h-[289px] bg-white shadow-md 
+              className="absolute left-full top-[-1px] min-w-[280px] min-h-[282px] bg-white shadow-md 
               p-6 rounded-lg z-50 border border-gray-100"
             >
               <MenuDropdown
                 brands={brands}
-                name={hoveredCategory.name}
                 category={hoveredCategory}
                 isPreview={true}
               />

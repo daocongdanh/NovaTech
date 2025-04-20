@@ -1,9 +1,11 @@
+import { Image } from "antd";
+
 export default function SideBannerList() {
   const banner = ["/banner1.jpg", "/banner2.jpg", "/banner3.jpg"];
   return (
     <>
       {banner.map((img, index) => (
-        <img
+        <Image
           key={index}
           src={img}
           alt={`Banner ${index + 1}`}
