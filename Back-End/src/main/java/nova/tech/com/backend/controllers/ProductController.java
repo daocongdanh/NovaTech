@@ -166,4 +166,18 @@ public class ProductController {
                 )
         );
     }
+
+    @PutMapping("/increase-view-count/{slug}")
+    public ResponseEntity<SuccessResponse> increaseViewCount(
+            @PathVariable String slug
+    ){
+        productService.increaseViewCount(slug);
+        return ResponseEntity.ok().body(
+                new SuccessResponse(
+                        "Increase view count successfully",
+                        OK,
+                        null
+                )
+        );
+    }
 }

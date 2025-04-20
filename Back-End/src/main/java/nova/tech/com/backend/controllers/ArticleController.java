@@ -76,4 +76,15 @@ public class ArticleController {
                 )
         );
     }
+
+    @GetMapping("/latest")
+    public ResponseEntity<SuccessResponse> getLatestArticles() {
+        return ResponseEntity.ok().body(
+                new SuccessResponse(
+                        "Get latest articles successfully",
+                        OK,
+                        articleService.getLatestArticles()
+                )
+        );
+    }
 }

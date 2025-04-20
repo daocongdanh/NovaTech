@@ -77,6 +77,7 @@
 
     <build>
         <plugins>
+            <!-- Maven Compiler Plugin (giữ nguyên nếu cần) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -93,6 +94,13 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+
+            <!-- Thêm Spring Boot Maven Plugin (QUAN TRỌNG) -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.4.4</version> <!-- Thay bằng phiên bản Spring Boot bạn dùng -->
             </plugin>
         </plugins>
     </build>

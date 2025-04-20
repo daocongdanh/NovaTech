@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -89,6 +90,11 @@ public class ArticleServiceImpl implements ArticleService{
     public Article getArticleBySlug(String slug) {
         return articleRepository.findBySlug(slug)
                 .orElseThrow(() -> new ResourceNotFoundException("Article not found with slug = " + slug));
+    }
+
+    @Override
+    public List<Article> getLatestArticles() {
+        return articleRepository.findTop4ByActiveTrueOrderByCreatedAtDesc();
     }
 
 }

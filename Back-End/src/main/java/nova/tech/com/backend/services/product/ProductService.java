@@ -19,4 +19,5 @@ public interface ProductService {
     void updateProduct(Long id, ProductRequest productRequest);
     List<ProductResponse> getRandom10Products(String slug);
     ProductResponse getProductBySlug(String slug);
+    void increaseViewCount(String slug);
 }

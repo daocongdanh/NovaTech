@@ -218,4 +218,12 @@ public class ProductServiceImpl implements ProductService{
                         product, product.getProductAttributeValues()))
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with slug: " + slug));
     }
+
+    @Override
+    public void increaseViewCount(String slug) {
+        Product product = productRepository.findBySlug(slug)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with slug: " + slug));
+        product.setViewCount(product.getViewCount() + 1);
+        productRepository.save(product);
+    }
 }

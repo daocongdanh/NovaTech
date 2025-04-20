@@ -23,12 +23,6 @@ public class BackEndApplication {
         System.setProperty("DATABASE_USER", dotenv.get("DATABASE_USER"));
         System.setProperty("DATABASE_PASSWORD", dotenv.get("DATABASE_PASSWORD"));
 
-        // JWT
-        System.setProperty("JWT_ACCESS_TOKEN_KEY", dotenv.get("JWT_ACCESS_TOKEN_KEY"));
-        System.setProperty("JWT_REFRESH_TOKEN_KEY", dotenv.get("JWT_REFRESH_TOKEN_KEY"));
-        System.setProperty("JWT_ACCESS_TOKEN_EXPIRATION", dotenv.get("JWT_ACCESS_TOKEN_EXPIRATION"));
-        System.setProperty("JWT_REFRESH_TOKEN_EXPIRATION", dotenv.get("JWT_REFRESH_TOKEN_EXPIRATION"));
-
 
         SpringApplication.run(BackEndApplication.class, args);
     }
