@@ -11,7 +11,7 @@ export default function Header() {
           <Link to={"/"}>
             <h2 className="hidden md:flex items-center text-white font-bold text-2xl">
               <img
-                src="logo123.png"
+                src="/logo123.png"
                 alt=""
                 className="w-8 h-8 object-cover rounded-full mr-2"
               />

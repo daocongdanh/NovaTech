@@ -1,8 +1,8 @@
 import { TResponse } from "@/types/response.type";
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
-// const BASEURL = "https://techstorevn.com/api/v1";
-const BASEURL = "http://localhost:8080/api/v1";
+const BASEURL = "https://techstorevn.com/api/v1";
+// const BASEURL = "http://localhost:8080/api/v1";
 let navigate: any = null;
 
 export const setNavigate = (nav: any) => {
